@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/KudiTrustProject.iml" filepath="$PROJECT_DIR$/.idea/KudiTrustProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/KudiTrust.iml" filepath="$PROJECT_DIR$/.idea/KudiTrust.iml" />
     </modules>
   </component>
 </project>

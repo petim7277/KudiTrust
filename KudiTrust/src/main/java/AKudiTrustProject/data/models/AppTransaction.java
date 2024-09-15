@@ -4,7 +4,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,5 +12,6 @@ import java.util.Date;
 public class AppTransaction {
     @Id
  private Long transactionId;
- private Date transactionDate;
+ private LocalDateTime transactionDate;
+ private String description;
 }

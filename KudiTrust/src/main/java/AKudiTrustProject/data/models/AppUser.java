@@ -3,7 +3,9 @@ package AKudiTrustProject.data.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
@@ -24,6 +26,6 @@ public class AppUser {
     @Column(unique = true, nullable = false)
     private String email;
     private String phoneNumber;
-    private Date createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
