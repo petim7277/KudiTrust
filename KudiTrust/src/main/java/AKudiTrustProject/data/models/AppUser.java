@@ -13,11 +13,10 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Getter
 @Setter
 @Entity
-@Table(name = "KudiUser")
 public class AppUser {
     @Id
     @GeneratedValue(strategy = SEQUENCE)
-    private Long userId;
+    private Long id;
     private String firstname;
     private String lastname;
     @Column(unique = true, nullable = false)
@@ -27,5 +26,7 @@ public class AppUser {
     private String email;
     private String phoneNumber;
     private LocalDateTime createdAt = LocalDateTime.now();
+    @OneToOne(mappedBy = "appUser", cascade = CascadeType.ALL)
+    private AppAccount appAccount;
 
 }

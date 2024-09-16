@@ -1,5 +1,6 @@
 package AKudiTrustProject.dtos.requests;
 
+import AKudiTrustProject.data.models.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,4 +15,5 @@ public class SignUpRequest {
     private String password;
     private String email;
     private String phoneNumber;
+    private AccountType accountType;
 }

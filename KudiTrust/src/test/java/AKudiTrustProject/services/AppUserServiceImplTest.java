@@ -1,5 +1,6 @@
 package AKudiTrustProject.services;
 
+import AKudiTrustProject.data.models.AccountType;
 import AKudiTrustProject.data.repositories.AppUserRepository;
 import AKudiTrustProject.dtos.requests.SignInRequest;
 import AKudiTrustProject.dtos.requests.SignUpRequest;
@@ -28,6 +29,7 @@ class AppUserServiceImplTest {
         signUpRequest.setFirstname("Precious");
         signUpRequest.setLastname("Etim");
         signUpRequest.setPhoneNumber("09162280794");
+        signUpRequest.setAccountType(AccountType.SAVINGS);
         appUserService.signUp(signUpRequest);
         assertEquals(1, appUserRepository.count());
     }
