@@ -1,12 +1,13 @@
 package AKudiTrustProject.services;
 
-import AKudiTrustProject.data.models.AccountType;
+import AKudiTrustProject.domain.models.enums.AccountType;
 import AKudiTrustProject.data.repositories.AppUserRepository;
-import AKudiTrustProject.dtos.requests.SignInRequest;
-import AKudiTrustProject.dtos.requests.SignUpRequest;
-import AKudiTrustProject.exceptions.kudi_user_exceptions.InvalidInputFieldsException;
-import AKudiTrustProject.exceptions.kudi_user_exceptions.KudiUserAlreadyExistException;
-import AKudiTrustProject.exceptions.kudi_user_exceptions.KudiUserNotFoundException;
+import AKudiTrustProject.domain.services.AppUserService;
+import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.SignInRequest;
+import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.SignUpRequest;
+import AKudiTrustProject.domain.kudi_user_exceptions.InvalidInputFieldsException;
+import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserAlreadyExistException;
+import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class AppUserServiceImplTest {
     @Autowired
-    private AppUserServiceImpl appUserService;
+    private AppUserService appUserService;
     @Autowired
     private AppUserRepository appUserRepository;
     @Test
@@ -32,6 +33,18 @@ class AppUserServiceImplTest {
         signUpRequest.setAccountType(AccountType.SAVINGS);
         appUserService.signUp(signUpRequest);
         assertEquals(1, appUserRepository.count());
+    }
+    @Test
+    void anotherSignUpTest() {
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUsername("freddie_123");
+        signUpRequest.setPassword("Fred123!");
+        signUpRequest.setEmail("fred@gmail.com");
+        signUpRequest.setFirstname("Frederick");
+        signUpRequest.setLastname("Lamar");
+        signUpRequest.setPhoneNumber("09162280798");
+        signUpRequest.setAccountType(AccountType.CURRENT);
+        appUserService.signUp(signUpRequest);
     }
 
     @Test
