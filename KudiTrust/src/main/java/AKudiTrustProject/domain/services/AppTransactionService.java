@@ -6,7 +6,8 @@ import AKudiTrustProject.application.ports.input.transactions.TerminateTransacti
 import AKudiTrustProject.application.ports.input.transactions.ViewTransactionHistoryUseCase;
 import AKudiTrustProject.infrastucture.adapters.config.paystack_config.PaystackConfig;
 import AKudiTrustProject.domain.models.AppUserDomainObject;
-import AKudiTrustProject.data.repositories.AppUserRepository;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.entity.AppUserEntity;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.repositories.AppUserRepository;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.CancelTransactionRequest;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.InitializeTransactionRequest;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.ViewTransactionHistoryRequest;
@@ -34,7 +35,7 @@ public class AppTransactionService implements StartTransactionUseCase, GetAccoun
     public InitializeTransactionResponse startTransaction(InitializeTransactionRequest transactionRequest) {
         RestTemplate restTemplate = new RestTemplate();
         InitializeTransactionResponse transactionResponse = new InitializeTransactionResponse();
-        Optional<AppUserDomainObject> foundUser = appUserRepository.findAppUsersByEmail(transactionRequest.getEmail());
+        Optional<AppUserEntity> foundUser = appUserRepository.findAppUsersByEmail(transactionRequest.getEmail());
         if (foundUser.isPresent()) {
             HttpEntity<InitializeTransactionRequest> request = buildPayment(transactionRequest);
             ResponseEntity<InitializeTransactionResponse>  response = restTemplate

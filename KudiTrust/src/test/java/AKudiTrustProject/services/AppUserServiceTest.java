@@ -1,10 +1,9 @@
 package AKudiTrustProject.services;
 
-import AKudiTrustProject.domain.models.enums.AccountType;
-import AKudiTrustProject.data.repositories.AppUserRepository;
+import AKudiTrustProject.domain.models.AppUserDomainObject;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.repositories.AppUserRepository;
 import AKudiTrustProject.domain.services.AppUserService;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.SignInRequest;
-import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.SignUpRequest;
 import AKudiTrustProject.domain.kudi_user_exceptions.InvalidInputFieldsException;
 import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserAlreadyExistException;
 import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserNotFoundException;
@@ -16,40 +15,38 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 @Slf4j
 @SpringBootTest
-class AppUserServiceImplTest {
+class AppUserServiceTest {
     @Autowired
     private AppUserService appUserService;
     @Autowired
     private AppUserRepository appUserRepository;
     @Test
     void signUpTest() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmail.com");
         signUpRequest.setFirstname("Precious");
         signUpRequest.setLastname("Etim");
         signUpRequest.setPhoneNumber("09162280794");
-        signUpRequest.setAccountType(AccountType.SAVINGS);
         appUserService.signUp(signUpRequest);
         assertEquals(1, appUserRepository.count());
     }
     @Test
     void anotherSignUpTest() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("freddie_123");
         signUpRequest.setPassword("Fred123!");
         signUpRequest.setEmail("fred@gmail.com");
         signUpRequest.setFirstname("Frederick");
         signUpRequest.setLastname("Lamar");
         signUpRequest.setPhoneNumber("09162280798");
-        signUpRequest.setAccountType(AccountType.CURRENT);
         appUserService.signUp(signUpRequest);
     }
 
     @Test
     void testThatAnExisting_UserCannotSignUp() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmail.com");
@@ -61,7 +58,7 @@ class AppUserServiceImplTest {
 
    @Test
     void testThatKudiUserCan_SignUpWith_WrongEmptyUsername_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+       AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmail.com");
@@ -73,7 +70,7 @@ class AppUserServiceImplTest {
 
    @Test
     void testThatKudiUserCan_SignUpWith_WrongUsername_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+       AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("Pressy_123+");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmail.com");
@@ -85,7 +82,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_WrongEmptyEmail_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("");
@@ -97,7 +94,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_WrongEmail_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmailcom");
@@ -110,7 +107,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_EmptyPassword_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("");
         signUpRequest.setEmail("petim@gmail.com");
@@ -122,7 +119,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_WrongPassword_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("password123!");
         signUpRequest.setEmail("petim@gmailcom");
@@ -135,7 +132,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_EmptyPhoneNumber_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmail.com");
@@ -147,7 +144,7 @@ class AppUserServiceImplTest {
 
     @Test
     void testThatKudiUserCan_SignUpWith_WrongPhoneNumber_Field() {
-        SignUpRequest signUpRequest = new SignUpRequest();
+        AppUserDomainObject signUpRequest = new AppUserDomainObject();
         signUpRequest.setUsername("pressy_123");
         signUpRequest.setPassword("Password123!");
         signUpRequest.setEmail("petim@gmailcom");

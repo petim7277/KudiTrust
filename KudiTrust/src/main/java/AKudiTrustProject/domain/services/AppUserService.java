@@ -1,55 +1,60 @@
 package AKudiTrustProject.domain.services;
 import AKudiTrustProject.application.ports.input.user_accounts.ViewAccountProfileUseCase;
 import AKudiTrustProject.application.ports.input.users.*;
+import AKudiTrustProject.application.ports.output.AppAccountPersistenceOutputPort;
+import AKudiTrustProject.application.ports.output.AppUserPersistenceOutputPort;
+import AKudiTrustProject.application.ports.output.keycloak.KudiUserIdentityManagerOutPutPort;
 import AKudiTrustProject.domain.models.enums.AccountType;
 import AKudiTrustProject.domain.models.AppAccountDomainObject;
 import AKudiTrustProject.domain.models.AppUserDomainObject;
-import AKudiTrustProject.data.repositories.AppAccountRepository;
-import AKudiTrustProject.data.repositories.AppUserRepository;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.entity.AppUserEntity;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.mapper.AppUserPersistenceMapper;
+import AKudiTrustProject.infrastucture.adapters.output.persistence.repositories.AppUserRepository;
 import AKudiTrustProject.domain.exceptions.ErrorMessages;
 import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserAlreadyExistException;
 import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserNotFoundException;
-import AKudiTrustProject.domain.mapper.KudiTrustMapper;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.*;
 import AKudiTrustProject.infrastucture.adapters.input.rest.data.responses.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Optional;
 
-import static AKudiTrustProject.domain.validator.KudiTrustValidator.validateFields;
+import static AKudiTrustProject.domain.validator.KudiTrustValidator.*;
 
 @AllArgsConstructor
 @Service
 public class AppUserService implements SignUpUseCase, SignInUseCase, TransferMoneyUsecase, RecieveMoneyUseCase,
                                         CancelTransactionUseCase,ViewUserProfileUseCase,ViewAccountProfileUseCase{
     private  final AppUserRepository appUserRepository;
-    private  final AppAccountRepository appAccountRepository;
-    private final KudiTrustMapper kudiTrustMapper;
-
+    private final AppUserPersistenceOutputPort userPersistenceOutputPort;
+    private final AppAccountPersistenceOutputPort appAccountPersistenceOutputPort;
+    private final KudiUserIdentityManagerOutPutPort kudiUserIdentityManagerOutPutPort;
     @Override
-    public SignUpResponse signUp(SignUpRequest signUpRequest) {
-
-        SignUpResponse signUpResponse = new SignUpResponse();
-        validateFields(signUpRequest);
-       Optional <AppUserDomainObject> foundUser = appUserRepository.findAppUsersByEmail(signUpRequest.getEmail());
-       if (foundUser.isPresent()){throw new KudiUserAlreadyExistException(ErrorMessages.KUDI_USER_ALREADY_EXIST);
-       }
-       AppUserDomainObject savedUser = appUserRepository.save(kudiTrustMapper.toSignUpRequest(signUpRequest));
+    public AppUserDomainObject signUp(AppUserDomainObject domainObject) {
+        validateFields(domainObject);
+        Optional<AppUserDomainObject> foundUser = Optional.ofNullable(userPersistenceOutputPort.findUserByEmail(domainObject.getEmail())
+                .orElseThrow(() -> new KudiUserAlreadyExistException(ErrorMessages.KUDI_USER_ALREADY_EXIST, HttpStatus.BAD_REQUEST)));
+        kudiUserIdentityManagerOutPutPort.createUser(foundUser.orElseThrow(()-> new KudiUserNotFoundException(ErrorMessages.KUDI_USER_CREATION_FAILED)));
+        AppUserDomainObject savedUser = userPersistenceOutputPort.saveUser(domainObject);
         AppAccountDomainObject appAccount = new AppAccountDomainObject();
-
         appAccount.setAccountBalance(BigDecimal.valueOf(0.0));
         appAccount.setAccountNumber(generateAccountNumber());
-        appAccount.setAccountType(AccountType.valueOf(signUpRequest.getAccountType().toString().toUpperCase()));
+        appAccount.setAccountType(AccountType.valueOf(domainObject.getAppAccount().getAccountType().toString().toUpperCase()));
         appAccount.setAppUser(savedUser);
-        appAccountRepository.save(appAccount);
-       signUpResponse.setMessage("Kudi User with username {--> "+signUpRequest.getUsername()+" }has successfully been created");
-        return signUpResponse;
+        appAccountPersistenceOutputPort.saveAccount(appAccount);
+        return savedUser;
     }
 
-
+    public void validateFields(AppUserDomainObject domainObject){
+        validateName(domainObject.getUsername());
+        validateEmail(domainObject.getEmail());
+        validatePassword(domainObject.getPassword());
+        validatePhoneNumber(domainObject.getPhoneNumber());
+    }
 
     public static String generateAccountNumber( ) {
         SecureRandom secureRandom = new SecureRandom();
@@ -64,7 +69,7 @@ public class AppUserService implements SignUpUseCase, SignInUseCase, TransferMon
     @Override
     public SignInResponse signIn(SignInRequest signInRequest) {
         SignInResponse signInResponse = new SignInResponse();
-        Optional <AppUserDomainObject> foundUser = appUserRepository.findAppUsersByEmail(signInRequest.getEmail());
+        Optional <AppUserEntity> foundUser = appUserRepository.findAppUsersByEmail(signInRequest.getEmail());
         if (foundUser.isEmpty()){throw  new KudiUserNotFoundException(ErrorMessages.KUDI_USER_NOT_FOUND);}
         signInResponse.setResponse("Kudi_User with username -->> "+signInRequest.getUsername()+"has been successfully Signed in");
         return signInResponse;

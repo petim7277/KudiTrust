@@ -1,4 +1,4 @@
-package AKudiTrustProject.infrastucture.adapters.entity;
+package AKudiTrustProject.infrastucture.adapters.output.persistence.entity;
 
 import AKudiTrustProject.domain.models.enums.NotificationDeliveryMode;
 import jakarta.persistence.Entity;

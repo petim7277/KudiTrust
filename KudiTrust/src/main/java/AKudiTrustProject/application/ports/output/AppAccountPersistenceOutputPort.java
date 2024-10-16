@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface AppAccountPersistenceOutputPort {
     AppAccountDomainObject saveAccount(AppAccountDomainObject appAccount);
-    Optional<AppAccountDomainObject> findAccountById(String appAccountId);
+    Optional<AppAccountDomainObject> findAccountById(Long appAccountId);
 }

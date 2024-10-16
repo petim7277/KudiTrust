@@ -1,6 +1,5 @@
-package AKudiTrustProject.infrastucture.adapters.entity;
+package AKudiTrustProject.infrastucture.adapters.output.persistence.entity;
 
-import AKudiTrustProject.domain.models.AppUserDomainObject;
 import AKudiTrustProject.domain.models.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,9 +21,9 @@ public class AppAccountEntity {
     private AccountType accountType;
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private LocalDate updatedAt = LocalDate.now();
-    @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "user_id")
-    private AppUserDomainObject appUser;
+//    private AppUserDomainObject appUser;
 
 
 

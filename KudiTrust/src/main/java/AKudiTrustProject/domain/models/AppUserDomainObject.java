@@ -2,6 +2,7 @@ package AKudiTrustProject.domain.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.keycloak.representations.idm.UserRepresentation;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class AppUserDomainObject {
     private String phoneNumber;
     private LocalDateTime createdAt = LocalDateTime.now();
     private AppAccountDomainObject appAccount;
+    private UserRepresentation userRepresentation;
 
 
 }
