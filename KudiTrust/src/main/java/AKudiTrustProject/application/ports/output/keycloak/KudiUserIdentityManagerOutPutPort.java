@@ -1,9 +1,10 @@
 package AKudiTrustProject.application.ports.output.keycloak;
 
-import AKudiTrustProject.domain.models.AppUserDomainObject;
-import AKudiTrustProject.infrastucture.adapters.input.rest.data.requests.SignUpRequest;
+import AKudiTrustProject.domain.models.AppUser;
+import org.keycloak.representations.idm.UserRepresentation;
 
 public interface KudiUserIdentityManagerOutPutPort  {
-    AppUserDomainObject createUser(AppUserDomainObject appUserDomainObject);
+    AppUser createUser(AppUser appUserDomainObject);
 
+    UserRepresentation getUserOnKeycloak(AppUser userDomainObject);
 }

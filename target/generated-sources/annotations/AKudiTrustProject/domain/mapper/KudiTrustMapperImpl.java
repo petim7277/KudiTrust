@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-16T10:12:40+0100",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
+    date = "2024-11-05T16:36:42+0100",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
 public class KudiTrustMapperImpl implements KudiTrustMapper {
@@ -28,6 +28,7 @@ public class KudiTrustMapperImpl implements KudiTrustMapper {
         appUserEntity.setPassword( signUpRequest.getPassword() );
         appUserEntity.setEmail( signUpRequest.getEmail() );
         appUserEntity.setPhoneNumber( signUpRequest.getPhoneNumber() );
+        appUserEntity.setAccountType( signUpRequest.getAccountType() );
 
         return appUserEntity;
     }

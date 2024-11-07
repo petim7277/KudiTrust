@@ -19,5 +19,5 @@ public class AppAccountDomainObject {
     private AccountType accountType;
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private  LocalDate updatedAt = LocalDate.now();
-    private AppUserDomainObject appUser;
+
 }

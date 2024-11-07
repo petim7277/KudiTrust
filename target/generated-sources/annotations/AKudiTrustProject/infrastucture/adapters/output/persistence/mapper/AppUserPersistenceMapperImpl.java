@@ -1,21 +1,22 @@
 package AKudiTrustProject.infrastucture.adapters.output.persistence.mapper;
 
-import AKudiTrustProject.domain.models.AppUserDomainObject;
+import AKudiTrustProject.domain.models.AppUser;
 import AKudiTrustProject.infrastucture.adapters.output.persistence.entity.AppUserEntity;
+import java.util.Optional;
 import javax.annotation.processing.Generated;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-10-16T10:12:40+0100",
-    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 22.0.2 (Oracle Corporation)"
+    date = "2024-11-05T16:36:42+0100",
+    comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
 public class AppUserPersistenceMapperImpl implements AppUserPersistenceMapper {
 
     @Override
-    public AppUserEntity toAppUserEntity(AppUserDomainObject appUserDomainObject) {
+    public AppUserEntity toAppUserEntity(AppUser appUserDomainObject) {
         if ( appUserDomainObject == null ) {
             return null;
         }
@@ -30,32 +31,34 @@ public class AppUserPersistenceMapperImpl implements AppUserPersistenceMapper {
         appUserEntity.setEmail( appUserDomainObject.getEmail() );
         appUserEntity.setPhoneNumber( appUserDomainObject.getPhoneNumber() );
         appUserEntity.setCreatedAt( appUserDomainObject.getCreatedAt() );
+        appUserEntity.setAccountType( appUserDomainObject.getAccountType() );
 
         return appUserEntity;
     }
 
     @Override
-    public AppUserDomainObject toAppUser(AppUserEntity appUserEntity) {
+    public AppUser toAppUser(AppUserEntity appUserEntity) {
         if ( appUserEntity == null ) {
             return null;
         }
 
-        AppUserDomainObject appUserDomainObject = new AppUserDomainObject();
+        AppUser appUser = new AppUser();
 
-        appUserDomainObject.setId( appUserEntity.getId() );
-        appUserDomainObject.setFirstname( appUserEntity.getFirstname() );
-        appUserDomainObject.setLastname( appUserEntity.getLastname() );
-        appUserDomainObject.setUsername( appUserEntity.getUsername() );
-        appUserDomainObject.setPassword( appUserEntity.getPassword() );
-        appUserDomainObject.setEmail( appUserEntity.getEmail() );
-        appUserDomainObject.setPhoneNumber( appUserEntity.getPhoneNumber() );
-        appUserDomainObject.setCreatedAt( appUserEntity.getCreatedAt() );
+        appUser.setId( appUserEntity.getId() );
+        appUser.setFirstname( appUserEntity.getFirstname() );
+        appUser.setLastname( appUserEntity.getLastname() );
+        appUser.setUsername( appUserEntity.getUsername() );
+        appUser.setPassword( appUserEntity.getPassword() );
+        appUser.setEmail( appUserEntity.getEmail() );
+        appUser.setPhoneNumber( appUserEntity.getPhoneNumber() );
+        appUser.setCreatedAt( appUserEntity.getCreatedAt() );
+        appUser.setAccountType( appUserEntity.getAccountType() );
 
-        return appUserDomainObject;
+        return appUser;
     }
 
     @Override
-    public UserRepresentation toUserRepresentation(AppUserDomainObject userDomainObject) {
+    public UserRepresentation toUserRepresentation(AppUser userDomainObject) {
         if ( userDomainObject == null ) {
             return null;
         }
@@ -72,19 +75,27 @@ public class AppUserPersistenceMapperImpl implements AppUserPersistenceMapper {
     }
 
     @Override
-    public AppUserDomainObject toAppDomainObject(UserRepresentation userRepresentation) {
+    public AppUser toAppDomainObject(UserRepresentation userRepresentation) {
         if ( userRepresentation == null ) {
             return null;
         }
 
-        AppUserDomainObject appUserDomainObject = new AppUserDomainObject();
+        AppUser appUser = new AppUser();
 
-        if ( userRepresentation.getId() != null ) {
-            appUserDomainObject.setId( Long.parseLong( userRepresentation.getId() ) );
+        appUser.setUsername( userRepresentation.getUsername() );
+        appUser.setEmail( userRepresentation.getEmail() );
+
+        return appUser;
+    }
+
+    @Override
+    public AppUser toOptionalAppUserDomainObject(Optional<AppUser> appUserDomainObject) {
+        if ( appUserDomainObject == null ) {
+            return null;
         }
-        appUserDomainObject.setUsername( userRepresentation.getUsername() );
-        appUserDomainObject.setEmail( userRepresentation.getEmail() );
 
-        return appUserDomainObject;
+        AppUser appUser = new AppUser();
+
+        return appUser;
     }
 }

@@ -1,13 +1,10 @@
 package AKudiTrustProject.application.ports.output;
 
-import AKudiTrustProject.domain.models.AppUserDomainObject;
-import AKudiTrustProject.infrastucture.adapters.output.persistence.entity.AppUserEntity;
-
-import java.util.Optional;
+import AKudiTrustProject.domain.models.AppUser;
 
 public interface AppUserPersistenceOutputPort {
-    AppUserDomainObject saveUser(AppUserDomainObject appUser);
-    AppUserDomainObject findUserById(Long userId);
-    Optional<AppUserDomainObject> findUserByEmail(String email);
-
+    AppUser saveUser(AppUser appUser);
+    AppUser findUserById(Long userId);
+    AppUser findUserByEmail(String email);
+    void deleteEntity(AppUser appUserDomainObject);
 }
