@@ -1,5 +1,7 @@
 package AKudiTrustProject.infrastucture.adapters.output.persistence.entity;
 
+import AKudiTrustProject.domain.models.AppAccountDomainObject;
+import AKudiTrustProject.domain.models.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +12,6 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity
 @Setter
 @Getter
-@NamedQuery(name = "AppUser.findByPassword", query = "SELECT password FROM AppUserEntity userEntity WHERE userEntity.password = :password")
 public class AppUserEntity {
     @Id
     @GeneratedValue(strategy = SEQUENCE)
@@ -24,6 +25,6 @@ public class AppUserEntity {
     private String email;
     private String phoneNumber;
     private LocalDateTime createdAt = LocalDateTime.now();
-//    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL)
-//    private AppAccountDomainObject appAccount;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 }

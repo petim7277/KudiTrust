@@ -21,9 +21,7 @@ public class AppAccountEntity {
     private AccountType accountType;
     private LocalDateTime createdAt = LocalDateTime.now() ;
     private LocalDate updatedAt = LocalDate.now();
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "user_id")
-//    private AppUserDomainObject appUser;
+
 
 
 
