@@ -92,6 +92,9 @@ public class AppUserService implements SignUpUseCase, SignInUseCase, TransferMon
     public AppUser signIn(AppUser userDomainObject) {
         AppUserEntity foundUser = appUserRepository.findAppUsersByEmail(userDomainObject.getEmail());
         if (foundUser== null){throw  new KudiUserNotFoundException(ErrorMessages.KUDI_USER_NOT_FOUND,HttpStatus.NOT_FOUND);}
+        if (kudiUserIdentityManagerOutPutPort.findKeycloakUserByEmail(userDomainObject.getEmail()) == null) {
+            throw new KudiUserNotFoundException(ErrorMessages.KUDI_KEYCLOAK_USER_NOT_FOUND,HttpStatus.NOT_FOUND);
+        }
         return appUserPersistenceMapper.toAppUser(foundUser);
     }
 

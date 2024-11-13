@@ -15,5 +15,4 @@ public interface AppUserPersistenceMapper {
     UserRepresentation toUserRepresentation(AppUser userDomainObject);
     @Mapping(target = "id", ignore = true)
     AppUser toAppDomainObject(UserRepresentation userRepresentation);
-    AppUser toOptionalAppUserDomainObject(Optional<AppUser> appUserDomainObject);
 }

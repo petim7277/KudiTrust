@@ -2,14 +2,13 @@ package AKudiTrustProject.infrastucture.adapters.output.persistence.mapper;
 
 import AKudiTrustProject.domain.models.AppUser;
 import AKudiTrustProject.infrastucture.adapters.output.persistence.entity.AppUserEntity;
-import java.util.Optional;
 import javax.annotation.processing.Generated;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-11-05T16:36:42+0100",
+    date = "2024-11-13T12:39:36+0100",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 17.0.12 (Oracle Corporation)"
 )
 @Component
@@ -84,17 +83,6 @@ public class AppUserPersistenceMapperImpl implements AppUserPersistenceMapper {
 
         appUser.setUsername( userRepresentation.getUsername() );
         appUser.setEmail( userRepresentation.getEmail() );
-
-        return appUser;
-    }
-
-    @Override
-    public AppUser toOptionalAppUserDomainObject(Optional<AppUser> appUserDomainObject) {
-        if ( appUserDomainObject == null ) {
-            return null;
-        }
-
-        AppUser appUser = new AppUser();
 
         return appUser;
     }

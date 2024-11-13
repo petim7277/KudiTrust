@@ -5,6 +5,7 @@ import org.keycloak.representations.idm.UserRepresentation;
 
 public interface KudiUserIdentityManagerOutPutPort  {
     AppUser createUser(AppUser appUserDomainObject);
+    void deleteUser(AppUser appUserDomainObject);
 
-    UserRepresentation getUserOnKeycloak(AppUser userDomainObject);
+    UserRepresentation findKeycloakUserByEmail(String email);
 }

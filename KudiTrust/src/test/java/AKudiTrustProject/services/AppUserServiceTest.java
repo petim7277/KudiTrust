@@ -33,12 +33,12 @@ class AppUserServiceTest {
     @Test
     void another_SignUpTest() {
         AppUser userDomainObject = new AppUser();
-        userDomainObject.setUsername("freddie_123");
-        userDomainObject.setPassword("Fred123!");
-        userDomainObject.setEmail("fredlamar@gmail.com");
-        userDomainObject.setFirstname("Frederick");
-        userDomainObject.setLastname("Lamar");
-        userDomainObject.setPhoneNumber("09162280798");
+        userDomainObject.setFirstname("Nelson");
+        userDomainObject.setLastname("Akewe");
+        userDomainObject.setPassword("Password456!");
+        userDomainObject.setEmail("nelsonakewe@gmail.com");
+        userDomainObject.setPhoneNumber("09262280695");
+        userDomainObject.setUsername("nelly123");
         userDomainObject.setAccountType(AccountType.CURRENT);
         appUserService.signUp(userDomainObject);
     }
@@ -57,7 +57,7 @@ class AppUserServiceTest {
     }
 
    @Test
-    void testThatKudiUserCan_SignUpWith_WrongEmptyUsername_Field() {
+    void testThatKudiUserCan_SignUpWith_EmptyUsername_Field() {
        AppUser userDomainObject = new AppUser();
         userDomainObject.setUsername("");
         userDomainObject.setPassword("Password123!");
@@ -157,17 +157,16 @@ class AppUserServiceTest {
     @Test
     void testAKudiUser_CanSignIn_WithoutSigningUpFirst(){
         AppUser userDomainObject = new AppUser();
-        userDomainObject.setUsername("pressy_123");
-        userDomainObject.setEmail("joan@gmail.com");
+        userDomainObject.setEmail("jackiewinter@gmail.com");
         assertThrows(KudiUserNotFoundException.class,()->appUserService.signIn(userDomainObject));
     }
 
     @Test
     void testAKudiUser_WhoHasSignedUp_CanSignIn(){
         AppUser userDomainObject = new AppUser();
-        userDomainObject.setUsername("pressy_123");
-        userDomainObject.setEmail("petim@gmail.com");
-        appUserService.signIn(userDomainObject);
+        userDomainObject.setEmail("jackwinter@gmail.com");
+       AppUser signedInUser =  appUserService.signIn(userDomainObject);
+       assertNotNull(signedInUser);
     }
 
 }

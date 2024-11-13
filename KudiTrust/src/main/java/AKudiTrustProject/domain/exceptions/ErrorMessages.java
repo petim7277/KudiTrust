@@ -14,4 +14,6 @@ public class ErrorMessages {
     public static final String KUDI_USER_IDENTITY_CANT_BE_EMPTY = "kudi user identity cannot be null" ;
     public static final String KUDI_USER_EMAIL_CANT_BE_EMPTY = "kudi user email cannot be null" ;
     public static final String KEYCLOAK_USER_ALREADY_EXIST = "kudi keycloak user already exist" ;
+    public static final String INVALID_REQUEST = "Invalid request";
+    public static final String KUDI_KEYCLOAK_USER_NOT_FOUND = "kudi keycloak user not found" ;
 }

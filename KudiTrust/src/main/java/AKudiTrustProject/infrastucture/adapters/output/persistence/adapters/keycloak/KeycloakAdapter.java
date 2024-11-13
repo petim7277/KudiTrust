@@ -2,7 +2,9 @@ package AKudiTrustProject.infrastucture.adapters.output.persistence.adapters.key
 
 import AKudiTrustProject.application.ports.output.AppUserPersistenceOutputPort;
 import AKudiTrustProject.application.ports.output.keycloak.KudiUserIdentityManagerOutPutPort;
+import AKudiTrustProject.domain.exceptions.KudiTrustExceptions;
 import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserAlreadyExistException;
+import AKudiTrustProject.domain.kudi_user_exceptions.KudiUserNotFoundException;
 import AKudiTrustProject.domain.models.AppUser;
 import AKudiTrustProject.domain.exceptions.ErrorMessages;
 import AKudiTrustProject.infrastucture.adapters.output.persistence.mapper.AppUserPersistenceMapper;
@@ -36,8 +38,8 @@ public class KeycloakAdapter implements KudiUserIdentityManagerOutPutPort {
 
     @Override
     public AppUser createUser(AppUser userDomainObject) {
-       Optional<AppUser> foundKeyCloakUser = getUserByEmail(userDomainObject.getEmail());
-        if (foundKeyCloakUser.isPresent()) {
+       UserRepresentation foundKeyCloakUser = findKeycloakUserByEmail(userDomainObject.getEmail());
+        if (foundKeyCloakUser != null) {
             throw new KudiUserAlreadyExistException(ErrorMessages.KEYCLOAK_USER_ALREADY_EXIST,HttpStatus.BAD_REQUEST);
         }
         else {
@@ -55,28 +57,31 @@ public class KeycloakAdapter implements KudiUserIdentityManagerOutPutPort {
                             userDomainObject.getEmail(), response.getStatus());
                 }
 
-            return appUserPersistenceMapper.toOptionalAppUserDomainObject(foundKeyCloakUser);
+            return appUserPersistenceMapper.toAppDomainObject(foundKeyCloakUser);
         }
     }
 
+    @Override
+    public void deleteUser(AppUser user) {
+        if (user ==null){throw  new KudiTrustExceptions(ErrorMessages.INVALID_REQUEST,HttpStatus.BAD_REQUEST);}
+        UserRepresentation userRepresentation = findKeycloakUserByEmail(user.getEmail());
+        if (userRepresentation == null) {
+            log.info("Kudi user with email: {} not found", user.getEmail());
+            throw  new KudiUserNotFoundException(ErrorMessages.KUDI_KEYCLOAK_USER_NOT_FOUND,HttpStatus.NOT_FOUND);
+        }
+        UserResource userResource = keycloak.realm(keycloakRealm).users().get(userRepresentation.getId());
+        if (userResource == null) {throw new KudiUserNotFoundException(ErrorMessages.KUDI_USER_NOT_FOUND,HttpStatus.NOT_FOUND);}
+        userResource.remove();
+    }
+
+    @Override
     public UserRepresentation findKeycloakUserByEmail(String email) {
        validateEmail(email);
-       List<UserRepresentation> foundUsers = keycloak.realm(keycloakRealm).users().search(email);
-       return foundUsers.get(0);
+       List<UserRepresentation> foundUsers = keycloak.realm(keycloakRealm).users().searchByEmail(email, true);
+       return foundUsers.isEmpty()? null : foundUsers.get(0);
     }
 
-    public Optional<AppUser> getUserByEmail(String email) {
-        UserRepresentation userRepresentation = findKeycloakUserByEmail(email);
-        if (userRepresentation == null) {
-            return Optional.empty();
-        }
-        AppUser userDomainObject = appUserPersistenceMapper.toAppDomainObject(userRepresentation);
-        userDomainObject.setUserRepresentation(userRepresentation);
-        return Optional.of(userDomainObject);
-    }
-    @Override
-    public UserRepresentation  getUserOnKeycloak(AppUser userDomainObject) {
-        UserResource userResource = keycloak.realm(keycloakRealm).users().get(userDomainObject.getEmail());
-        return userResource.toRepresentation();
-    }
+
+
+
 }
